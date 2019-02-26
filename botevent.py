@@ -147,9 +147,9 @@ _FINBOT = run_bot["assist"]
 Bots = _FINBOT
 admin = run_bot["Admin"]
 bbc = run_bot['Creator']
-Owner = ["u48732f34a67da3436642249f83d16ade",bbc]
-Creator = ["u48732f34a67da3436642249f83d16ade",bbc]
-Master = ["u48732f34a67da3436642249f83d16ade",bbc]
+Owner = ["u84334ff75922fafc1bfd1f84573307a0",bbc]
+Creator = ["u84334ff75922fafc1bfd1f84573307a0",bbc]
+Master = ["u84334ff75922fafc1bfd1f84573307a0",bbc]
 
 FNO = [fn1,fn2,fn3,fn4,fn5]
 KAC  = [fn1,fn2,fn3,fn4,fn5]
