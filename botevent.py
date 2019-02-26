@@ -3943,6 +3943,19 @@ def finbot(alfino):
                                 del bot_run["Pro_Gimage"][to]
                                 with open('finbot1.json', 'w') as fp:
                                 	json.dump(bot_run, fp, sort_keys=True, indent=4)
+                        elif cmd == "gruplist":
+                          if run["finbot"] == True:
+                            if sender in Master or sender in admin or sender in kangyat:
+                               ma = ""
+                               a = 0
+                               gid = kang.getGroupIdsJoined()
+                               for i in gid:
+                                   G = kang.getGroup(i)
+                                   a = a + 1
+                                   end = "\n"
+                                   ma += "â  " + str(a) + ". " +G.name+ "\n"
+                               kang.sendMessage(msg.to,"[ GROUP LIST ]\n\n"+ma+"badala\n[ Total"+str(len(gid))+"Groups ]")
+
 
                         elif cmd.startswith("autorestart: "):
                           if run["finbot"] == True:
@@ -3952,6 +3965,56 @@ def finbot(alfino):
                                 num =  int(strnum)
                                 bot_run["timeRestart"] = num
                                 kang.sendReplyMessage(msg_id,to,up()+strnum)
+                        elif cmd.startswith("open "):
+                          if run["finbot"] == True:
+                            if sender in Master or sender in kangyat:
+                              separate = text.split(" ")
+                              number = text.replace(separate[0] + " ","")
+                              groups = kang.getGroupIdsJoined()
+                              ret_ = ""
+                              try:
+                                  group = groups[int(number)-1]
+                                  G = kang.getGroup(group)
+                                  G.preventedJoinByTicket = False
+                                  kang.updateGroup(G)
+                                  try:
+                                      gCreator = G.creator.mid
+                                      dia = kang.getContact(gCreator)
+                                      zx = ""
+                                      zxc = ""
+                                      zx2 = []
+                                      xpesan = 'Sukses Open Qr Creator :  '
+                                      diaa = str(dia.displayName)
+                                      pesan = ''
+                                      pesan2 = pesan+"@a\n"
+                                      xlen = str(len(zxc)+len(xpesan))
+                                      xlen2 = str(len(zxc)+len(pesan2)+len(xpesan)-1)
+                                      zx = {'S':xlen, 'E':xlen2, 'M':dia.mid}
+                                      zx2.append(zx)
+                                      zxc += pesan2
+                                  except:
+                                      gCreator = "Tidak ditemukan"
+                                  if G.invitee is None:
+                                      gPending = "0"
+                                  else:
+                                      gPending = str(len(G.invitee))
+                                  if G.preventedJoinByTicket == True:
+                                      gQr = "Tertutup"
+                                      gTicket = "Tidak ada"
+                                  else:
+                                      gQr = "Terbuka"
+                                      gTicket = "https://line.me/R/ti/g/{}".format(str(kang.reissueGroupTicket(G.id)))
+                                  timeCreated = []
+                                  timeCreated.append(time.strftime("%d-%m-%Y [ %H:%M:%S ]", time.localtime(int(G.createdTime) / 1000)))
+                                  ret_ += xpesan+zxc
+                                  ret_ += "Nama : {}".format(G.name)
+                                  ret_ += "\nGroup Qr : {}".format(gQr)
+                                  ret_ += "\nPendingan : {}".format(gPending)
+                                  ret_ += "\nGroup Ticket : {}".format(gTicket)
+                                  ret_ += ""
+                                kang.sendMessage(receiver, ret_, contentMetadata={'MENTION':str('{"MENTIONEES":'+json.dumps(zx2).replace(' ','')+'}')}, contentType=0)
+                            except:
+                                pass
                         elif cmd.startswith("limiter: "):
                           if run["finbot"] == True:
                            if sender in Master or sender in kangyat:
