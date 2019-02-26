@@ -3956,7 +3956,47 @@ def finbot(alfino):
                                    ma += "â  " + str(a) + ". " +G.name+ "\n"
                                kang.sendMessage(msg.to,"[ GROUP LIST ]\n\n"+ma+"badala\n[ Total"+str(len(gid))+"Groups ]")
 
-
+                        elif cmd.startswith("infogrup "):
+                          if run["finbot"] == True:
+                            if sender in Master or sender in admin or sender in kangyat:
+                              separate = text.split(" ")
+                              number = text.replace(separate[0] + " ","")
+                              groups = kang.getGroupIdsJoined()
+                              ret_ = ""
+                              try:
+                                  group = groups[int(number)-1]
+                                  G = kang.getGroup(group)
+                                  try:
+                                      gCreator = G.creator.displayName
+                                  except:
+                                      gCreator = "Tidak ditemukan"
+                                  if G.invitee is None:
+                                      gPending = "0"
+                                  else:
+                                      gPending = str(len(G.invitee))
+                                  if G.preventedJoinByTicket == True:
+                                      gQr = "Tertutup"
+                                      gTicket = "Tidak ada"
+                                  else:
+                                      gQr = "Terbuka"
+                                      gTicket = "https://line.me/R/ti/g/{}".format(str(kang.reissueGroupTicket(G.id)))
+                                  timeCreated = []
+                                  timeCreated.append(time.strftime("%d-%m-%Y [ %H:%M:%S ]", time.localtime(int(G.createdTime) / 1000)))
+                                  ret_ += "Group Info "
+                                  ret_ += "\nmmm: {}".format(G.name)
+                                  ret_ += "\nID Group : {}".format(G.id)
+                                  ret_ += "\nPembuat : {}".format(gCreator)
+                                  ret_ += "\nWaktu Dibuat : {}".format(str(timeCreated))
+                                  ret_ += "\nJumlah Member : {}".format(str(len(G.members)))
+                                  ret_ += "\nJumlah Pending : {}".format(gPending)
+                                  ret_ += "\nGroup Qr : {}".format(gQr)
+                                  ret_ += "\nGroup Ticket : {}".format(gTicket)
+                                  ret_ += "\nPicture Url : http://dl.profile.line-cdn.net/{}".format(G.pictureStatus)
+                                  ret_ += ""
+                                  kang.sendMessage(to, str(ret_))
+                                  kang.sendImageWithURL(msg.to, 'http://dl.profile.line-cdn.net/'+G.pictureStatus)
+                              except:
+                                  pass
                         elif cmd.startswith("autorestart: "):
                           if run["finbot"] == True:
                            if sender in Master or sender in kangyat:
